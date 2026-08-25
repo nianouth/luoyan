@@ -1,0 +1,286 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 228 27% 7%;
+    --foreground: 42 38% 87%;
+    --card: 231 26% 12%;
+    --card-foreground: 42 38% 87%;
+    --popover: 231 26% 12%;
+    --popover-foreground: 42 38% 87%;
+    --primary: 4 66% 54%;
+    --primary-foreground: 42 38% 92%;
+    --secondary: 231 22% 18%;
+    --secondary-foreground: 42 38% 87%;
+    --muted: 231 22% 16%;
+    --muted-foreground: 44 15% 58%;
+    --accent: 37 49% 58%;
+    --accent-foreground: 228 27% 7%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 42 38% 92%;
+    --border: 42 30% 88% / 0.14;
+    --input: 42 30% 88% / 0.18;
+    --ring: 4 66% 54%;
+    --radius: 0.375rem;
+    --sidebar-background: 231 26% 11%;
+    --sidebar-foreground: 42 38% 87%;
+    --sidebar-primary: 4 66% 54%;
+    --sidebar-primary-foreground: 42 38% 92%;
+    --sidebar-accent: 231 22% 18%;
+    --sidebar-accent-foreground: 42 38% 87%;
+    --sidebar-border: 42 30% 88% / 0.14;
+    --sidebar-ring: 4 66% 54%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ink text-paper;
+    font-family: "Noto Sans SC", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    letter-spacing: 0.01em;
+  }
+
+  ::selection {
+    background: #d8493b;
+    color: #ece3cf;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0e1018;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2a2f45;
+    border-radius: 5px;
+    border: 2px solid #0e1018;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #d8493b;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: "Noto Serif SC", "Noto Sans SC", serif;
+    letter-spacing: 0.06em;
+  }
+
+  /* 全局噪点颗粒 */
+  .noise-overlay {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* 青海波纹样 */
+  .seigaiha {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='28' viewBox='0 0 56 28'%3E%3Cg fill='none' stroke='%23c9a05e' stroke-opacity='0.16'%3E%3Ccircle cx='14' cy='28' r='13'/%3E%3Ccircle cx='14' cy='28' r='8'/%3E%3Ccircle cx='42' cy='28' r='13'/%3E%3Ccircle cx='42' cy='28' r='8'/%3E%3Ccircle cx='28' cy='14' r='13'/%3E%3Ccircle cx='28' cy='14' r='8'/%3E%3Ccircle cx='0' cy='14' r='13'/%3E%3Ccircle cx='56' cy='14' r='13'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 56px 28px;
+  }
+
+  /* 页面进入：上浮淡入 */
+  .page-enter {
+    animation: pageEnter 0.35s ease-out both;
+  }
+  @keyframes pageEnter {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Hero 鸟居描边动画 */
+  .torii-path {
+    stroke-dasharray: 2400;
+    stroke-dashoffset: 2400;
+    animation: toriiDraw 2.4s ease-out 0.2s forwards;
+  }
+  .torii-path-slow {
+    stroke-dasharray: 2600;
+    stroke-dashoffset: 2600;
+    animation: toriiDraw 3s ease-out 0.9s forwards;
+  }
+  @keyframes toriiDraw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .fadein-late {
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out 1.6s forwards;
+  }
+  .fadein-later {
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out 2.2s forwards;
+  }
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* 滚动指示 */
+  .scroll-hint {
+    animation: scrollHint 2.5s ease-in-out infinite;
+  }
+  @keyframes scrollHint {
+    0% {
+      transform: translateY(-100%);
+    }
+    80%,
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  /* 箭头按钮：横线+30°角，hover 延伸 */
+  .arrow-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .arrow-btn .arrow-line {
+    position: relative;
+    display: inline-block;
+    width: 2.25rem;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .arrow-btn .arrow-line::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 0.55rem;
+    height: 1px;
+    background: currentColor;
+    transform: translateY(-50%) rotate(-30deg);
+    transform-origin: right center;
+  }
+  .arrow-btn:hover .arrow-line {
+    width: 3.25rem;
+  }
+
+  /* 卡片 hover 朱金渐变浮现 */
+  .hover-gradation {
+    position: relative;
+    isolation: isolate;
+  }
+  .hover-gradation::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(120deg, rgba(216, 73, 59, 0.16), rgba(201, 160, 94, 0.12));
+    opacity: 0;
+    transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @media (min-width: 768px) {
+    .hover-gradation:hover::after {
+      opacity: 1;
+    }
+  }
+
+  /* 栏目标签(汉数字+描边) */
+  .sec-label {
+    @apply inline-flex items-center gap-2 border border-gold/40 px-3 py-1 text-[11px] tracking-[0.3em] text-gold;
+  }
+
+  /* 高亮短语底色 */
+  .hl-vermilion {
+    background: rgba(216, 73, 59, 0.85);
+    color: #f7efdd;
+    padding: 0 0.2em;
+  }
+  .hl-gold {
+    background: rgba(201, 160, 94, 0.28);
+    color: #e8d9b8;
+    padding: 0 0.2em;
+  }
+  .hl-blue {
+    background: rgba(102, 204, 255, 0.22);
+    color: #bfe6ff;
+    padding: 0 0.2em;
+  }
+
+  /* Markdown 正文排版 */
+  .md-content {
+    @apply text-[15px] leading-[1.9] text-paper/90;
+  }
+  .md-content h1 {
+    @apply font-display mt-2 mb-6 border-l-2 border-vermilion pl-4 text-2xl font-bold text-paper;
+  }
+  .md-content h2 {
+    @apply font-display mb-4 mt-10 flex items-center gap-3 text-xl font-bold text-paper;
+  }
+  .md-content h2::before {
+    content: "";
+    @apply inline-block h-3 w-3 rotate-45 border border-gold bg-transparent;
+  }
+  .md-content h3 {
+    @apply font-display mb-3 mt-8 text-lg font-semibold text-gold;
+  }
+  .md-content p {
+    @apply my-4;
+  }
+  .md-content ul,
+  .md-content ol {
+    @apply my-4 space-y-2 pl-6;
+  }
+  .md-content ul {
+    list-style: none;
+  }
+  .md-content ul li {
+    position: relative;
+  }
+  .md-content ul li::before {
+    content: "·";
+    position: absolute;
+    left: -1.1rem;
+    color: #d8493b;
+    font-weight: 700;
+  }
+  .md-content ol {
+    @apply list-decimal;
+  }
+  .md-content strong {
+    @apply font-bold text-paper;
+  }
+  .md-content blockquote {
+    @apply my-6 border-l-2 border-gold/60 bg-ink2/70 py-3 pl-5 pr-4 text-sand;
+  }
+  .md-content table {
+    @apply my-6 w-full border-collapse text-sm;
+  }
+  .md-content th {
+    @apply border-b border-gold/40 px-3 py-2.5 text-left font-display text-gold;
+  }
+  .md-content td {
+    @apply border-b border-hairline px-3 py-2.5 align-top;
+  }
+  .md-content hr {
+    @apply my-8 border-hairline;
+  }
+  .md-content input[type="checkbox"] {
+    @apply mr-2 accent-vermilion;
+  }
+}
